@@ -1,0 +1,622 @@
+{
+  "last_updated": "2026-02-23T00:00:00.000Z",
+  "modules": [
+    {
+      "id": "mod-fiducious",
+      "name": "Fiducious Processing Engine",
+      "version": "2.0.0",
+      "repo": "eccentricexecutioners-spec/mod-fiducious",
+      "deploy_url": "https://mod-fiducious.vercel.app",
+      "status": "integrated",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 1,
+      "provides": [
+        "Core 3D photogrammetry processing",
+        "ArUco marker detection",
+        "Headband measurement extraction",
+        "Scale calculation",
+        "BullMQ worker pipeline"
+      ],
+      "description": "Core photogrammetry processor - converts video/images with fiducial markers into scaled 3D models and headband measurements. Production v2.0.",
+      "dependencies": [],
+      "used_by": [
+        "mod-sisyphean",
+        "mod-head-sizer",
+        "mod-stair-straight-run",
+        "mod-mosaic"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/jobs/create",
+          "description": "Start processing job",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id",
+          "description": "Get job status",
+          "auth_required": true
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/jobs/:id/delete",
+          "description": "Delete processing job",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id/embed-data",
+          "description": "Data for embed component",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/upload",
+          "description": "Upload video/images",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/scan/:jobId",
+          "description": "Get scan results",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/scan/:jobId/files",
+          "description": "Get scan output files",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/process/:id/calibration",
+          "description": "Run ArUco calibration",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/process",
+          "description": "Start processing pipeline",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": [
+        {
+          "name": "ModuleEmbed",
+          "file": "ModuleEmbed.tsx"
+        },
+        {
+          "name": "PhotogrammetryEmbed",
+          "file": "PhotogrammetryEmbed.tsx"
+        }
+      ]
+    },
+    {
+      "id": "mod-fiducious-slim",
+      "name": "Fiducious Slim (Lightweight)",
+      "repo": "eccentricexecutioners-spec/mod-fiducious-slim",
+      "deploy_url": null,
+      "status": "abandoned",
+      "api_base": null,
+      "requires_auth": false,
+      "supabase_tables": 0,
+      "provides": [],
+      "description": "Experimental Python-based research branch for headband detection and mesh measurement. No Next.js app, no package.json. Superseded by mod-fiducious v2.0.",
+      "dependencies": [],
+      "used_by": [],
+      "endpoints": [],
+      "embeddable_components": []
+    },
+    {
+      "id": "mod-sisyphean",
+      "name": "Sisyphean Photogrammetry Pipeline",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-sisyphean",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": "/api/mesh",
+      "requires_auth": true,
+      "supabase_tables": 1,
+      "provides": [
+        "Full photogrammetry pipeline (video → textured mesh)",
+        "Apple Object Capture integration",
+        "Auto-scaling via Fiducious calibration",
+        "BullMQ async job queue",
+        "OBJ/MTL/GLB output",
+        "React Three Fiber 3D viewer"
+      ],
+      "description": "Full photogrammetry pipeline — generates 3D meshes from video using Apple Object Capture on Mac Mini M4. Optional auto-scaling via Fiducious. Not yet deployed to Vercel.",
+      "dependencies": [
+        "mod-fiducious"
+      ],
+      "used_by": [
+        "eccentricexecutioners"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/mesh/create",
+          "description": "Start mesh generation job",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/mesh/:id",
+          "description": "Get job status",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/mesh/:id/embed-data",
+          "description": "Data for embed component",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": []
+    },
+    {
+      "id": "mod-head-sizer",
+      "name": "Head Sizing Module",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-head-sizer",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 0,
+      "provides": [
+        "Head measurements from video",
+        "ArUco calibration",
+        "CSV export for hat fabrication"
+      ],
+      "description": "Thin UI orchestrator — guides users through video upload, calls Fiducious API for measurement extraction, downloads CSV/scripts. No database (storage only). Not yet deployed to Vercel.",
+      "dependencies": [
+        "mod-fiducious",
+        "mod-sisyphean"
+      ],
+      "used_by": [
+        "eccentricexecutioners",
+        "digitalconformateur"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/upload",
+          "description": "Upload video for head measurement",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/session/process",
+          "description": "Start processing session",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/session/status",
+          "description": "Get session processing status",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": []
+    },
+    {
+      "id": "mod-stair-straight-run",
+      "name": "Straight-Run Stair Measurement",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-stair-straight-run",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 0,
+      "provides": [
+        "Stair measurements from video",
+        "Rise/run calculation",
+        "IRC 2021 code compliance checking",
+        "Stringer profile CSV for CNC"
+      ],
+      "description": "Thin UI orchestrator — guides installers through marker placement, calls Fiducious for measurements, presents stringer profiles, checks IRC code compliance. No database (storage only). Not yet deployed to Vercel.",
+      "dependencies": [
+        "mod-fiducious",
+        "mod-sisyphean"
+      ],
+      "used_by": [
+        "eccentricexecutioners",
+        "pocketstairs"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/upload",
+          "description": "Upload video for stair measurement",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/session/process",
+          "description": "Start processing session",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/session/status",
+          "description": "Get session processing status",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": []
+    },
+    {
+      "id": "mod-hbc-order-hat-blocks",
+      "name": "Hat Blocks Canada Order System",
+      "version": "1.0.0",
+      "repo": "eccentricexecutioners-spec/mod-hbc-order-hat-blocks",
+      "deploy_url": "https://mod-hbc-order-hat-blocks.vercel.app",
+      "status": "integrated",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 7,
+      "provides": [
+        "Hat block calculator with Ramanujan solver",
+        "Style 51/52 Bezier parameters",
+        "448-row CSV export for CNC fabrication",
+        "Custom and Full Set modes"
+      ],
+      "description": "Hat fabrication order processing — converts customer head measurements into precision CNC parameters using Ramanujan ellipse solver. 7 database tables. Production v1.0.",
+      "dependencies": [],
+      "used_by": [
+        "eccentricexecutioners",
+        "digitalconformateur"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/calculate",
+          "description": "Run hat block calculations",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": [
+        {
+          "name": "ModuleEmbed",
+          "file": "ModuleEmbed.tsx",
+          "props": [
+            "orderId",
+            "token",
+            "baseUrl",
+            "onComplete",
+            "onStatusChange"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mod-hbc-order-flanges",
+      "name": "Hat Blocks Canada Flange Orders",
+      "version": "1.0.0",
+      "repo": "eccentricexecutioners-spec/mod-hbc-order-flanges",
+      "deploy_url": "https://mod-hbc-order-flanges.vercel.app",
+      "status": "integrated",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 3,
+      "provides": [
+        "Flange order processing",
+        "Flange dimension calculations (circumference, diameter, brim, profile)",
+        "CSV export for CNC fabrication",
+        "PDF export"
+      ],
+      "description": "Hat brim flange order processing — calculates flange dimensions and generates CNC-ready output. 3 database tables with RLS. Production v1.0.",
+      "dependencies": [],
+      "used_by": [
+        "eccentricexecutioners"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/calculate",
+          "description": "Run flange calculations",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/orders/create",
+          "description": "Create new flange order",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/orders/:id",
+          "description": "Get order details",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/orders/:id/export/csv",
+          "description": "Download flange CSV",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/orders/:id/export/pdf",
+          "description": "Download flange PDF",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": []
+    },
+    {
+      "id": "mod-hbc-order-band-blocks",
+      "name": "Hat Blocks Canada Band Block Orders",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-hbc-order-band-blocks",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 0,
+      "provides": [
+        "Band block order processing",
+        "Band block dimension calculations"
+      ],
+      "description": "Hat band block order processing — stub implementation only. Has UI scaffolding but no API routes or database schema yet.",
+      "dependencies": [],
+      "used_by": [],
+      "endpoints": [],
+      "embeddable_components": []
+    },
+    {
+      "id": "mod-fusion-model-control",
+      "name": "Fusion 360 Model Control",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-fusion-model-control",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 8,
+      "provides": [
+        "3D model viewing via Autodesk Viewer",
+        "Parameter extraction from .f3d files",
+        "CSV parameter import/export",
+        "Model translation to SVF2",
+        "Import history tracking"
+      ],
+      "description": "Fusion 360 integration — view .f3d models in 3D, extract parameters, import/export CSV. 8 database tables, 10 API routes. Requires Autodesk Platform Services (APS) credentials. Not yet deployed to Vercel.",
+      "dependencies": [
+        "Autodesk Platform Services (APS)"
+      ],
+      "used_by": [
+        "eccentricexecutioners"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/jobs/create",
+          "description": "Upload .f3d and start translation",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id",
+          "description": "Poll job status",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/jobs/:id/translate",
+          "description": "Trigger model translation",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id/embed-data",
+          "description": "Get viewer data",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/models/:id/parameters/extracted",
+          "description": "Extract parameters from model",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/models/:id/parameters/import",
+          "description": "Import CSV parameters",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/models/:id/parameters/imports",
+          "description": "List import history",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/models/:id/parameters/imports/:importId",
+          "description": "Get specific import details",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/models/:id/export/csv",
+          "description": "Export model parameters as CSV",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/models",
+          "description": "List all models",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": [
+        {
+          "name": "ModuleEmbed",
+          "file": "ModuleEmbed.tsx",
+          "props": [
+            "modelId",
+            "token",
+            "baseUrl",
+            "onParameterChange"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mod-mosaic",
+      "name": "Mosaic Mesh Segmentation",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-mosaic",
+      "deploy_url": "https://mod-mosaic.vercel.app",
+      "status": "standalone-working",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 3,
+      "provides": [
+        "Mesh segmentation via curvature-aware region growing",
+        "Per-patch Gaussian curvature analysis",
+        "Flat pattern export (DXF + SVG)",
+        "Press die generation (STL male/female)",
+        "Material-aware pressability classification",
+        "STEP file support",
+        "React Three Fiber 3D viewer"
+      ],
+      "description": "Segments 3D sculpture meshes into quasi-developable patches for metal press fabrication. Computes discrete Gaussian curvature, classifies pressability by material, generates flat patterns and press die geometries. 3 database tables. Supports Simple Mode dome flattening and STEP files.",
+      "dependencies": [
+        "mod-fiducious"
+      ],
+      "used_by": [
+        "eccentricexecutioners"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/jobs/create",
+          "description": "Create a segmentation job",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id",
+          "description": "Get job status and details",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id/embed-data",
+          "description": "Get embeddable visualization data",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id/patches",
+          "description": "Get patches with download URLs",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id/logs",
+          "description": "Get processing step logs",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": [
+        {
+          "name": "MosaicEmbed",
+          "file": "MosaicEmbed.tsx",
+          "props": [
+            "jobId",
+            "token",
+            "baseUrl",
+            "theme",
+            "onStatusChange",
+            "onComplete"
+          ]
+        }
+      ]
+    }
+  ],
+  "sites": [
+    {
+      "id": "eccentricexecutioners",
+      "name": "Mothership",
+      "domain": "eccentricexecutioners.ca",
+      "repo": "eccentricexecutioners-spec/eccentricexecutioners",
+      "status": "live",
+      "pages": 23,
+      "api_routes": 35,
+      "supabase_tables": 6,
+      "description": "Internal ops hub — projects, clients, fabricators, hours, full module toolkit",
+      "modules_used": [
+        "mod-fiducious",
+        "mod-sisyphean",
+        "mod-head-sizer",
+        "mod-stair-straight-run",
+        "mod-fusion-model-control",
+        "mod-hbc-order-hat-blocks",
+        "mod-hbc-order-flanges",
+        "mod-mosaic"
+      ]
+    },
+    {
+      "id": "digitalconformateur",
+      "name": "Digital Conformateur",
+      "domain": "digitalconformateur.ca",
+      "repo": "eccentricexecutioners-spec/digitalconformateur",
+      "status": "live",
+      "pages": 9,
+      "api_routes": 35,
+      "supabase_tables": 4,
+      "description": "B2B/B2C digital hat measurement service for hatters and their clients",
+      "modules_used": [
+        "mod-head-sizer",
+        "mod-hbc-order-hat-blocks"
+      ]
+    },
+    {
+      "id": "pocketstairs",
+      "name": "Pocket Stairs",
+      "domain": "pocketstairs.ca",
+      "repo": "eccentricexecutioners-spec/pocketstairs",
+      "status": "planning",
+      "pages": 0,
+      "api_routes": 0,
+      "supabase_tables": 0,
+      "description": "Professional stair measurement tools for installers and contractors",
+      "modules_used": [
+        "mod-stair-straight-run"
+      ]
+    }
+  ],
+  "security_notes": [
+    {
+      "module": "mod-stair-straight-run",
+      "severity": "high",
+      "issue": "No authentication on API routes",
+      "discovered": "2026-02-22"
+    },
+    {
+      "module": "mod-head-sizer",
+      "severity": "medium",
+      "issue": "Supabase module-scope initialization bug",
+      "discovered": "2026-02-22"
+    },
+    {
+      "module": "mod-hbc-order-hat-blocks",
+      "severity": "low",
+      "issue": "package.json incorrectly names itself mod-fusion360",
+      "discovered": "2026-02-22"
+    },
+    {
+      "module": "mod-fiducious-slim",
+      "severity": "info",
+      "issue": "Abandoned — no git repo, no package.json, Python research scripts only. Consider archiving or deleting.",
+      "discovered": "2026-02-23"
+    }
+  ]
+}
