@@ -1,12 +1,12 @@
 # Eccentric Executioners — Ecosystem Registry
 
-> Central registry of all modules and sites in the EE ecosystem.
+> Central registry of all modules, add-ins, apps, and sites in the EE ecosystem.
 
-**Last Updated:** February 23, 2026 | **Registry Version:** 2.1 | **Modules:** 10 | **Sites:** 3
+**Last Updated:** February 27, 2026 | **Registry Version:** 3.0 | **Web Modules:** 12 | **Fusion Add-ins:** 3 | **iOS Apps:** 1 | **Sites:** 3
 
 ---
 
-## MODULES
+## WEB MODULES
 
 ### mod-fiducious — Fiducious Processing Engine
 **Status:** Integrated | **Version:** 2.0.0 | **Deploy:** https://mod-fiducious.vercel.app
@@ -51,10 +51,10 @@ Experimental Python-based research branch for headband detection and mesh measur
 ---
 
 ### mod-sisyphean — Sisyphean Photogrammetry Pipeline
-**Status:** Building | **Version:** 0.1.0 | **Deploy:** None (not yet deployed)
+**Status:** Standalone Working | **Version:** 0.1.0 | **Deploy:** https://mod-sisyphean.vercel.app
 **Repo:** eccentricexecutioners-spec/mod-sisyphean | **API Base:** /api/mesh | **Tables:** 1
 
-Full photogrammetry pipeline — generates 3D meshes from video using Apple Object Capture on Mac Mini M4. Optional auto-scaling via Fiducious calibration. BullMQ async queue. 5-15 min processing. Outputs OBJ, MTL, GLB.
+Full photogrammetry pipeline — generates 3D meshes from video using Apple Object Capture on Mac Mini M4. Optional auto-scaling via Fiducious. Deployed to Vercel.
 
 **Provides:**
 - Full photogrammetry pipeline (video → textured mesh)
@@ -179,19 +179,31 @@ Hat brim flange order processing — calculates flange dimensions (circumference
 ---
 
 ### mod-hbc-order-band-blocks — Hat Blocks Canada Band Block Orders
-**Status:** Building | **Version:** 0.1.0 | **Deploy:** None
-**Repo:** eccentricexecutioners-spec/mod-hbc-order-band-blocks | **API Base:** /api | **Tables:** 0
+**Status:** Integrated | **Version:** 1.0.0 | **Deploy:** https://mod-hbc-order-band-blocks.vercel.app
+**Repo:** eccentricexecutioners-spec/mod-hbc-order-band-blocks | **API Base:** /api | **Tables:** 3
 
-Stub implementation — has UI scaffolding but no API routes or database schema. Needs full implementation.
+Hat band block order processing — calculates elliptical major/minor diameters for hat sweatband blocks using AGM elliptic integral solver. Supports Metric (55-65cm), Stetson (21.5"-25.25"), and Custom sizing modes. Generates CNC-ready CSV and fabrication PDF. Embeddable in mothership with JWT authentication and postMessage integration. Production v1.0.
 
 **Provides:**
-- Band block order processing (planned)
-- Band block dimension calculations (planned)
+- Band block order processing
+- Band block dimension calculations (elliptic integral solver)
+- CSV export for CNC fabrication (63 rows, 15 decimal precision)
+- PDF export (landscape A4, gold theme)
+- Order persistence in Supabase
+- Mothership iframe embed integration
+- Async job processing with callbacks
 
 **Dependencies:** None
-**Used by:** —
+**Used by:** eccentricexecutioners
 
-**Endpoints:** None yet
+**Endpoints (2):**
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | /api/validate-token | Validate JWT token from mothership |
+| POST | /api/calculate | Process band block calculations with callback |
+
+**Embeddable Component:** `BandBlockEmbed.tsx`
 
 ---
 
@@ -262,6 +274,125 @@ Segments 3D sculpture meshes into quasi-developable patches for metal press fabr
 
 ---
 
+### mod-chickadee-parametric — Chickadee Parametric CAD Generator
+**Status:** Building | **Version:** 0.1.0 | **Deploy:** None (not yet deployed)
+**Repo:** eccentricexecutioners-spec/mod-chickadee-parametric | **API Base:** /api | **Tables:** 0
+
+Interactive parametric CAD generation with real-time 3D preview. Next.js frontend with FastAPI/CadQuery backend. Browser-based CAD tools for manufacturing including IRC 2021 compliant stair stringers. Backend deployed on Railway.
+
+**Provides:**
+- Parametric stair stringer generation
+- IRC 2021 compliant calculations
+- Real-time STL preview via React Three Fiber
+- STEP file export for CNC fabrication
+- Configurable material thickness and tread depth
+- Multi-unit support (inches/cm)
+
+**Dependencies:** None
+**Used by:** eccentricexecutioners (mothership)
+
+**Endpoints (3):**
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | /api/preview/stair | Generate STL preview for real-time 3D (< 1 second) |
+| POST | /api/generate/stair | Generate STEP file for CNC fabrication (5-10 seconds) |
+| GET | /api/download/:jobId/:filename | Download generated STEP/STL files |
+
+**Embeddable Components:** `StairViewer3D.tsx`, `ParameterPanel.tsx`
+
+---
+
+### mod-universal-3d-viewer — Universal 3D Viewer
+**Status:** Building | **Version:** 0.1.0 | **Deploy:** None (not yet deployed)
+**Repo:** eccentricexecutioners-spec/mod-universal-3d-viewer | **Tables:** 0
+
+Universal CAD file viewer for Next.js applications. Supports STEP, STL, OBJ, IGES formats with browser-based rendering using Three.js and OpenCascade.js. Client-side only, no server processing required.
+
+**Provides:**
+- Multi-format CAD file import (STEP, STL, OBJ, IGES)
+- Browser-based 3D rendering via Three.js
+- Drag-and-drop file upload
+- OpenCascade.js geometry processing
+- Embeddable React component
+
+**Dependencies:** None
+**Used by:** mod-chickadee-parametric
+
+**Embeddable Component:** `UniversalViewer.tsx`
+
+---
+
+## FUSION 360 ADD-INS
+
+### geopanel — GeoPanel Dome Generator
+**Status:** Building | **Version:** 0.1.0
+**Repo:** eccentricexecutioners-spec/geopanel | **Platform:** macOS | **Language:** Python 3.12+
+
+Fusion 360 add-in that generates Goldberg polyhedron dome geometry with exact planar faces. Implements GP(n,0) Class I geodesic generation with icosahedron base.
+
+**Provides:**
+- Goldberg polyhedron dome generation
+- Exact planar face calculation
+- Real-time geometry preview in Fusion 360
+- User parameter integration
+- Spherical projection algorithms
+
+---
+
+### polyhedron-generator — Polyhedron Generator (Win→Mac Framework)
+**Status:** Building | **Version:** 0.1.0
+**Repo:** eccentricexecutioners-spec/polyhedron-generator | **Platform:** macOS | **Language:** Python 3.12+
+
+Framework and workflow for converting Windows-only Fusion 360 add-ins to run natively on macOS. Provides systematic conversion structure with templates and checklist.
+
+**Provides:**
+- Windows add-in porting framework
+- Cross-platform compatibility utilities
+- Add-in template generation
+- Conversion status tracking
+- Deployment scripting
+
+---
+
+### spline-param — SplineParam
+**Status:** Standalone Working | **Version:** 3.1.0
+**Repo:** eccentricexecutioners-spec/SplineParam | **Platform:** macOS/Windows | **Language:** Python 3.12+
+
+Fusion 360 add-in that captures spline and curve lengths as live User Parameters. Select any spline, arc, or edge, name it, and create a tracked parameter. UUID-based tracking, manual refresh. Production v3.1.
+
+**Provides:**
+- Spline/curve length parameterization
+- Live user parameter creation in Fusion 360
+- UUID-based edge tracking
+- Parameter renaming with link preservation
+- BRep and sketch geometry support
+- Distribution packaging (ZIP)
+
+**Commands:** Capture Spline Length, Refresh Spline Params
+
+---
+
+## iOS APPS
+
+### mod-fiducious-pro — Fiducious Pro (iOS)
+**Status:** Building | **Version:** 0.1.0
+**Repo:** eccentricexecutioners-spec/mod-fiducious-pro | **Platform:** iOS 17+ | **Language:** Swift 5.9+
+
+Native iOS client for photogrammetry processing. Professional measurement tool using ARKit for video capture, uploads to mod-fiducious backend for processing. SwiftUI interface.
+
+**Provides:**
+- ARKit-powered video capture
+- Real-time camera tracking and plane detection
+- Video upload to mod-fiducious backend
+- Job status polling
+- Result file download (PDF, CSV, mesh)
+- 3D mesh visualization via SceneKit
+
+**Dependencies:** mod-fiducious (backend)
+
+---
+
 ## PARENT SITES
 
 ### Mothership (eccentricexecutioners.ca)
@@ -269,7 +400,7 @@ Segments 3D sculpture meshes into quasi-developable patches for metal press fabr
 
 Internal ops hub — projects, clients, fabricators, hours, full module toolkit.
 
-**Modules (8):** mod-fiducious, mod-sisyphean, mod-head-sizer, mod-stair-straight-run, mod-fusion-model-control, mod-hbc-order-hat-blocks, mod-hbc-order-flanges, mod-mosaic
+**Modules (9):** mod-fiducious, mod-sisyphean, mod-head-sizer, mod-stair-straight-run, mod-fusion-model-control, mod-hbc-order-hat-blocks, mod-hbc-order-flanges, mod-hbc-order-band-blocks, mod-mosaic
 
 ---
 
@@ -291,7 +422,7 @@ Professional stair measurement tools for installers and contractors. Site does n
 
 ---
 
-## MODULE DEPENDENCY GRAPH
+## DEPENDENCY GRAPH
 
 ```
 Sites:
@@ -310,7 +441,7 @@ Sites:
 │
 └─ eccentricexecutioners.ca (Mothership)
    ├─ mod-fiducious .............. integrated v2.0.0
-   ├─ mod-sisyphean .............. building v0.1.0
+   ├─ mod-sisyphean .............. standalone-working v0.1.0
    │  └─ mod-fiducious
    ├─ mod-head-sizer ............. building v0.1.0
    │  ├─ mod-sisyphean
@@ -322,12 +453,24 @@ Sites:
    │  └─ Autodesk Platform Services (APS)
    ├─ mod-hbc-order-hat-blocks ... integrated v1.0.0
    ├─ mod-hbc-order-flanges ...... integrated v1.0.0
+   ├─ mod-hbc-order-band-blocks .. integrated v1.0.0
    └─ mod-mosaic ................. standalone-working v0.1.0
       └─ mod-fiducious
 
-Standalone (not linked to a site):
-├─ mod-fiducious-slim (abandoned)
-└─ mod-hbc-order-band-blocks (building — stub only)
+Web Modules (standalone):
+├─ mod-chickadee-parametric ...... building v0.1.0
+│  └─ mod-universal-3d-viewer (viewer dependency)
+├─ mod-universal-3d-viewer ....... building v0.1.0
+└─ mod-fiducious-slim ............ abandoned
+
+Fusion 360 Add-ins:
+├─ geopanel ...................... building v0.1.0
+├─ polyhedron-generator .......... building v0.1.0
+└─ spline-param .................. standalone-working v3.1.0
+
+iOS Apps:
+└─ mod-fiducious-pro ............. building v0.1.0
+   └─ mod-fiducious (backend)
 ```
 
 ---

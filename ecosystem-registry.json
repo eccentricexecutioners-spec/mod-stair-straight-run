@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-02-23T00:00:00.000Z",
+  "last_updated": "2026-02-27T00:00:00.000Z",
   "modules": [
     {
       "id": "mod-fiducious",
@@ -114,8 +114,8 @@
       "name": "Sisyphean Photogrammetry Pipeline",
       "version": "0.1.0",
       "repo": "eccentricexecutioners-spec/mod-sisyphean",
-      "deploy_url": null,
-      "status": "building",
+      "deploy_url": "https://mod-sisyphean.vercel.app",
+      "status": "standalone-working",
       "api_base": "/api/mesh",
       "requires_auth": true,
       "supabase_tables": 1,
@@ -127,7 +127,7 @@
         "OBJ/MTL/GLB output",
         "React Three Fiber 3D viewer"
       ],
-      "description": "Full photogrammetry pipeline — generates 3D meshes from video using Apple Object Capture on Mac Mini M4. Optional auto-scaling via Fiducious. Not yet deployed to Vercel.",
+      "description": "Full photogrammetry pipeline — generates 3D meshes from video using Apple Object Capture on Mac Mini M4. Optional auto-scaling via Fiducious. Deployed to Vercel.",
       "dependencies": [
         "mod-fiducious"
       ],
@@ -351,22 +351,51 @@
     {
       "id": "mod-hbc-order-band-blocks",
       "name": "Hat Blocks Canada Band Block Orders",
-      "version": "0.1.0",
+      "version": "1.0.0",
       "repo": "eccentricexecutioners-spec/mod-hbc-order-band-blocks",
-      "deploy_url": null,
-      "status": "building",
+      "deploy_url": "https://mod-hbc-order-band-blocks.vercel.app",
+      "status": "integrated",
       "api_base": "/api",
       "requires_auth": true,
-      "supabase_tables": 0,
+      "supabase_tables": 3,
       "provides": [
         "Band block order processing",
-        "Band block dimension calculations"
+        "Band block dimension calculations (elliptic integral solver)",
+        "CSV export for CNC fabrication (63 rows, 15 decimal precision)",
+        "PDF export (landscape A4, gold theme)",
+        "Order persistence in Supabase",
+        "Mothership iframe embed integration",
+        "Async job processing with callbacks"
       ],
-      "description": "Hat band block order processing — stub implementation only. Has UI scaffolding but no API routes or database schema yet.",
+      "description": "Hat band block order processing — calculates elliptical major/minor diameters for hat sweatband blocks using AGM elliptic integral solver. Supports Metric (55-65cm), Stetson (21.5\"-25.25\"), and Custom sizing modes. Generates CNC-ready CSV and fabrication PDF. Embeddable in mothership with JWT authentication and postMessage integration. Production v1.0.",
       "dependencies": [],
-      "used_by": [],
-      "endpoints": [],
-      "embeddable_components": []
+      "used_by": [
+        "eccentricexecutioners"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/validate-token",
+          "description": "Validate JWT token from mothership",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/calculate",
+          "description": "Process band block calculations with callback",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": [
+        {
+          "name": "BandBlockEmbed",
+          "file": "BandBlockEmbed.tsx",
+          "props": [
+            "token",
+            "parentOrigin"
+          ]
+        }
+      ]
     },
     {
       "id": "mod-fusion-model-control",
@@ -539,6 +568,198 @@
           ]
         }
       ]
+    },
+    {
+      "id": "mod-chickadee-parametric",
+      "name": "Chickadee Parametric CAD Generator",
+      "type": "web-module",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-chickadee-parametric",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": "/api",
+      "requires_auth": false,
+      "supabase_tables": 0,
+      "provides": [
+        "Parametric stair stringer generation",
+        "IRC 2021 compliant calculations",
+        "Real-time STL preview via React Three Fiber",
+        "STEP file export for CNC fabrication",
+        "Configurable material thickness and tread depth",
+        "Multi-unit support (inches/cm)"
+      ],
+      "description": "Interactive parametric CAD generation with real-time 3D preview. Next.js frontend with FastAPI/CadQuery backend. Browser-based CAD tools for manufacturing including IRC 2021 compliant stair stringers. Backend deployed on Railway.",
+      "dependencies": [],
+      "used_by": [
+        "eccentricexecutioners"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/preview/stair",
+          "description": "Generate STL preview for real-time 3D (< 1 second)",
+          "auth_required": false
+        },
+        {
+          "method": "POST",
+          "path": "/api/generate/stair",
+          "description": "Generate STEP file for CNC fabrication (5-10 seconds)",
+          "auth_required": false
+        },
+        {
+          "method": "GET",
+          "path": "/api/download/:jobId/:filename",
+          "description": "Download generated STEP/STL files",
+          "auth_required": false
+        }
+      ],
+      "embeddable_components": [
+        {
+          "name": "StairViewer3D",
+          "file": "StairViewer3D.tsx"
+        },
+        {
+          "name": "ParameterPanel",
+          "file": "ParameterPanel.tsx"
+        }
+      ]
+    },
+    {
+      "id": "mod-universal-3d-viewer",
+      "name": "Universal 3D Viewer",
+      "type": "web-module",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-universal-3d-viewer",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": null,
+      "requires_auth": false,
+      "supabase_tables": 0,
+      "provides": [
+        "Multi-format CAD file import (STEP, STL, OBJ, IGES)",
+        "Browser-based 3D rendering via Three.js",
+        "Drag-and-drop file upload",
+        "OpenCascade.js geometry processing",
+        "Embeddable React component"
+      ],
+      "description": "Universal CAD file viewer for Next.js applications. Supports STEP, STL, OBJ, IGES formats with browser-based rendering using Three.js and OpenCascade.js. Client-side only, no server processing required.",
+      "dependencies": [],
+      "used_by": [
+        "mod-chickadee-parametric"
+      ],
+      "endpoints": [],
+      "embeddable_components": [
+        {
+          "name": "UniversalViewer",
+          "file": "UniversalViewer.tsx",
+          "props": [
+            "fileUrl",
+            "format",
+            "onLoad",
+            "theme"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mod-fiducious-pro",
+      "name": "Fiducious Pro (iOS)",
+      "type": "ios-app",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-fiducious-pro",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": null,
+      "requires_auth": true,
+      "supabase_tables": 0,
+      "provides": [
+        "ARKit-powered video capture",
+        "Real-time camera tracking and plane detection",
+        "Video upload to mod-fiducious backend",
+        "Job status polling",
+        "Result file download (PDF, CSV, mesh)",
+        "3D mesh visualization via SceneKit"
+      ],
+      "description": "Native iOS client for photogrammetry processing. Professional measurement tool using ARKit for video capture, uploads to mod-fiducious backend for processing. Swift 5.9+, SwiftUI, iOS 17+.",
+      "dependencies": [
+        "mod-fiducious"
+      ],
+      "used_by": [],
+      "endpoints": [],
+      "embeddable_components": []
+    },
+    {
+      "id": "geopanel",
+      "name": "GeoPanel Dome Generator",
+      "type": "fusion-addin",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/geopanel",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": null,
+      "requires_auth": false,
+      "supabase_tables": 0,
+      "provides": [
+        "Goldberg polyhedron dome generation",
+        "Exact planar face calculation",
+        "Real-time geometry preview in Fusion 360",
+        "User parameter integration",
+        "Spherical projection algorithms"
+      ],
+      "description": "Fusion 360 add-in that generates Goldberg polyhedron dome geometry with exact planar faces. Python 3.12+, macOS native. Implements GP(n,0) Class I geodesic generation with icosahedron base.",
+      "dependencies": [],
+      "used_by": [],
+      "endpoints": [],
+      "embeddable_components": []
+    },
+    {
+      "id": "polyhedron-generator",
+      "name": "Polyhedron Generator (Win→Mac Framework)",
+      "type": "fusion-addin",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/polyhedron-generator",
+      "deploy_url": null,
+      "status": "building",
+      "api_base": null,
+      "requires_auth": false,
+      "supabase_tables": 0,
+      "provides": [
+        "Windows add-in porting framework",
+        "Cross-platform compatibility utilities",
+        "Add-in template generation",
+        "Conversion status tracking",
+        "Deployment scripting"
+      ],
+      "description": "Framework and workflow for converting Windows-only Fusion 360 add-ins to run natively on macOS. Provides systematic conversion structure with templates and checklist. Python 3.12+.",
+      "dependencies": [],
+      "used_by": [],
+      "endpoints": [],
+      "embeddable_components": []
+    },
+    {
+      "id": "spline-param",
+      "name": "SplineParam",
+      "type": "fusion-addin",
+      "version": "3.1.0",
+      "repo": "eccentricexecutioners-spec/SplineParam",
+      "deploy_url": null,
+      "status": "standalone-working",
+      "api_base": null,
+      "requires_auth": false,
+      "supabase_tables": 0,
+      "provides": [
+        "Spline/curve length parameterization",
+        "Live user parameter creation in Fusion 360",
+        "UUID-based edge tracking",
+        "Parameter renaming with link preservation",
+        "BRep and sketch geometry support",
+        "Distribution packaging (ZIP)"
+      ],
+      "description": "Fusion 360 add-in that captures spline and curve lengths as live User Parameters. Select any spline, arc, or edge, name it, and create a tracked parameter. UUID-based tracking, manual refresh. Production v3.1.",
+      "dependencies": [],
+      "used_by": [],
+      "endpoints": [],
+      "embeddable_components": []
     }
   ],
   "sites": [
@@ -560,6 +781,7 @@
         "mod-fusion-model-control",
         "mod-hbc-order-hat-blocks",
         "mod-hbc-order-flanges",
+        "mod-hbc-order-band-blocks",
         "mod-mosaic"
       ]
     },
