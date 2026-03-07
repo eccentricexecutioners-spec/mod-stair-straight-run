@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getTokenFromRequest, unauthorizedResponse } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
+  try {
+    getTokenFromRequest(request);
+  } catch {
+    return unauthorizedResponse();
+  }
+
   try {
     const { video_url, template, session_id } = await request.json();
 

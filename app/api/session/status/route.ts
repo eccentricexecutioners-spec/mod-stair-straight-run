@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getTokenFromRequest, unauthorizedResponse } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
+  try {
+    getTokenFromRequest(request);
+  } catch {
+    return unauthorizedResponse();
+  }
+
   try {
     const jobId = request.nextUrl.searchParams.get('job_id');
 

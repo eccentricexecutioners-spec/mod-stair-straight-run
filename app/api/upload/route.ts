@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { getTokenFromRequest, unauthorizedResponse } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
+  try {
+    getTokenFromRequest(request);
+  } catch {
+    return unauthorizedResponse();
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
