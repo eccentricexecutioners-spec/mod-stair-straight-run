@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-02-27T00:00:00.000Z",
+  "last_updated": "2026-03-13T00:00:00.000Z",
   "modules": [
     {
       "id": "mod-fiducious",
@@ -10,7 +10,7 @@
       "status": "integrated",
       "api_base": "/api",
       "requires_auth": true,
-      "supabase_tables": 1,
+      "supabase_tables": 2,
       "provides": [
         "Core 3D photogrammetry processing",
         "ArUco marker detection",
@@ -120,14 +120,14 @@
       "requires_auth": true,
       "supabase_tables": 1,
       "provides": [
-        "Full photogrammetry pipeline (video → textured mesh)",
+        "Full photogrammetry pipeline (video \u2192 textured mesh)",
         "Apple Object Capture integration",
         "Auto-scaling via Fiducious calibration",
         "BullMQ async job queue",
         "OBJ/MTL/GLB output",
         "React Three Fiber 3D viewer"
       ],
-      "description": "Full photogrammetry pipeline — generates 3D meshes from video using Apple Object Capture on Mac Mini M4. Optional auto-scaling via Fiducious. Deployed to Vercel.",
+      "description": "Full photogrammetry pipeline \u2014 generates 3D meshes from video using Apple Object Capture on Mac Mini M4. Optional auto-scaling via Fiducious. Deployed to Vercel.",
       "dependencies": [
         "mod-fiducious"
       ],
@@ -161,7 +161,7 @@
       "name": "Head Sizing Module",
       "version": "0.1.0",
       "repo": "eccentricexecutioners-spec/mod-head-sizer",
-      "deploy_url": null,
+      "deploy_url": "https://mod-head-sizer.vercel.app",
       "status": "building",
       "api_base": "/api",
       "requires_auth": true,
@@ -171,7 +171,7 @@
         "ArUco calibration",
         "CSV export for hat fabrication"
       ],
-      "description": "Thin UI orchestrator — guides users through video upload, calls Fiducious API for measurement extraction, downloads CSV/scripts. No database (storage only). Not yet deployed to Vercel.",
+      "description": "Thin UI orchestrator \u2014 guides users through video upload, calls Fiducious API for measurement extraction, downloads CSV/scripts. No database (storage only). Deployed to Vercel.",
       "dependencies": [
         "mod-fiducious",
         "mod-sisyphean"
@@ -218,7 +218,7 @@
         "IRC 2021 code compliance checking",
         "Stringer profile CSV for CNC"
       ],
-      "description": "Thin UI orchestrator — guides installers through marker placement, calls Fiducious for measurements, presents stringer profiles, checks IRC code compliance. No database (storage only). Not yet deployed to Vercel.",
+      "description": "Thin UI orchestrator \u2014 guides installers through marker placement, calls Fiducious for measurements, presents stringer profiles, checks IRC code compliance. No database (storage only). Not yet deployed to Vercel.",
       "dependencies": [
         "mod-fiducious",
         "mod-sisyphean"
@@ -252,7 +252,7 @@
     {
       "id": "mod-hbc-order-hat-blocks",
       "name": "Hat Blocks Canada Order System",
-      "version": "1.0.0",
+      "version": "1.3.0",
       "repo": "eccentricexecutioners-spec/mod-hbc-order-hat-blocks",
       "deploy_url": "https://mod-hbc-order-hat-blocks.vercel.app",
       "status": "integrated",
@@ -263,9 +263,15 @@
         "Hat block calculator with Ramanujan solver",
         "Style 51/52 Bezier parameters",
         "448-row CSV export for CNC fabrication",
-        "Custom and Full Set modes"
+        "Custom and Full Set modes",
+        "OvalShapeTool \u2014 interactive ellipse visualization with Newton-Raphson solver",
+        "Stepper inputs with RepeatButton press-and-hold on all numeric fields",
+        "Full-Set Custom Delta with delta-only shape popup",
+        "Proportional delta scaling (60cm base reference)",
+        "Icon-only compact header",
+        "America/Vancouver timezone standardization"
       ],
-      "description": "Hat fabrication order processing — converts customer head measurements into precision CNC parameters using Ramanujan ellipse solver. 7 database tables. Production v1.0.",
+      "description": "Hat fabrication order processing \u2014 converts customer head measurements into precision CNC parameters using Ramanujan ellipse solver. OvalShapeTool for interactive shape customization. Stepper inputs across all numeric fields. 7 database tables. Production v1.3.",
       "dependencies": [],
       "used_by": [
         "eccentricexecutioners",
@@ -296,7 +302,7 @@
     {
       "id": "mod-hbc-order-flanges",
       "name": "Hat Blocks Canada Flange Orders",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "repo": "eccentricexecutioners-spec/mod-hbc-order-flanges",
       "deploy_url": "https://mod-hbc-order-flanges.vercel.app",
       "status": "integrated",
@@ -307,9 +313,16 @@
         "Flange order processing",
         "Flange dimension calculations (circumference, diameter, brim, profile)",
         "CSV export for CNC fabrication",
-        "PDF export"
+        "PDF export",
+        "OvalShapeTool \u2014 interactive ellipse visualization with Newton-Raphson solver",
+        "Stepper inputs with RepeatButton press-and-hold on all numeric fields",
+        "Full-Set Custom Delta with delta-only shape popup",
+        "Proportional delta scaling (60cm base reference)",
+        "Profile Visualizer with brim arc rendering",
+        "Single Accept Order workflow",
+        "America/Vancouver timezone standardization"
       ],
-      "description": "Hat brim flange order processing — calculates flange dimensions and generates CNC-ready output. 3 database tables with RLS. Production v1.0.",
+      "description": "Hat brim flange order processing \u2014 calculates flange dimensions and generates CNC-ready output. OvalShapeTool for interactive shape customization. Stepper inputs across all numeric fields. Profile Visualizer. Single Accept Order workflow. 3 database tables with RLS. Production v1.1.",
       "dependencies": [],
       "used_by": [
         "eccentricexecutioners"
@@ -351,7 +364,7 @@
     {
       "id": "mod-hbc-order-band-blocks",
       "name": "Hat Blocks Canada Band Block Orders",
-      "version": "1.0.0",
+      "version": "0.2.0",
       "repo": "eccentricexecutioners-spec/mod-hbc-order-band-blocks",
       "deploy_url": "https://mod-hbc-order-band-blocks.vercel.app",
       "status": "integrated",
@@ -365,9 +378,15 @@
         "PDF export (landscape A4, gold theme)",
         "Order persistence in Supabase",
         "Mothership iframe embed integration",
-        "Async job processing with callbacks"
+        "Async job processing with callbacks",
+        "OvalShapeTool \u2014 interactive ellipse visualization with Newton-Raphson solver",
+        "Stepper inputs with RepeatButton press-and-hold on all numeric fields",
+        "Full-Set Custom Delta with delta-only shape popup",
+        "Proportional delta scaling (60cm base reference)",
+        "Single Accept Order workflow",
+        "America/Vancouver timezone standardization"
       ],
-      "description": "Hat band block order processing — calculates elliptical major/minor diameters for hat sweatband blocks using AGM elliptic integral solver. Supports Metric (55-65cm), Stetson (21.5\"-25.25\"), and Custom sizing modes. Generates CNC-ready CSV and fabrication PDF. Embeddable in mothership with JWT authentication and postMessage integration. Production v1.0.",
+      "description": "Hat band block order processing \u2014 calculates elliptical major/minor diameters for hat sweatband blocks using AGM elliptic integral solver. OvalShapeTool for interactive shape customization. Stepper inputs across all numeric fields. Supports Metric (55-65cm), Stetson (21.5\"-25.25\"), and Custom sizing modes. Generates CNC-ready CSV and fabrication PDF. Single Accept Order workflow. Embeddable in mothership with JWT authentication and postMessage integration. Production v0.2.",
       "dependencies": [],
       "used_by": [
         "eccentricexecutioners"
@@ -402,19 +421,24 @@
       "name": "Fusion 360 Model Control",
       "version": "0.1.0",
       "repo": "eccentricexecutioners-spec/mod-fusion-model-control",
-      "deploy_url": null,
-      "status": "building",
+      "deploy_url": "https://mod-fusion-model-control.vercel.app",
+      "status": "standalone-working",
       "api_base": "/api",
       "requires_auth": true,
-      "supabase_tables": 8,
+      "supabase_tables": 2,
       "provides": [
-        "3D model viewing via Autodesk Viewer",
-        "Parameter extraction from .f3d files",
+        "Fusion 360 model linking via embed code or public link",
+        "Mothership integration with JWT auth and webhook callbacks",
+        "OAuth PKCE flow with Autodesk (deployed, awaiting APS activation)",
+        "3D model viewing via Autodesk Viewer (awaiting APS)",
+        "Direct .f3d file upload to OSS (awaiting APS)",
+        "Parameter extraction from .f3d files (awaiting APS)",
         "CSV parameter import/export",
-        "Model translation to SVF2",
-        "Import history tracking"
+        "Model translation to SVF2 (awaiting APS)",
+        "Fusion project/file browsing (awaiting APS)",
+        ".f3d preview PNG extraction"
       ],
-      "description": "Fusion 360 integration — view .f3d models in 3D, extract parameters, import/export CSV. 8 database tables, 10 API routes. Requires Autodesk Platform Services (APS) credentials. Not yet deployed to Vercel.",
+      "description": "Fusion 360 integration \u2014 link models via embed code or public link, view in mothership project cards. Full mothership round-trip with JWT auth and webhook callbacks. OAuth PKCE, file upload, and Autodesk Viewer features deployed but awaiting APS activation. 2 database tables, 18 API routes. Deployed to Vercel.",
       "dependencies": [
         "Autodesk Platform Services (APS)"
       ],
@@ -424,26 +448,38 @@
       "endpoints": [
         {
           "method": "POST",
-          "path": "/api/jobs/create",
-          "description": "Upload .f3d and start translation",
-          "auth_required": true
-        },
-        {
-          "method": "GET",
-          "path": "/api/jobs/:id",
-          "description": "Poll job status",
+          "path": "/api/models/create",
+          "description": "Create model link (mothership entry point)",
           "auth_required": true
         },
         {
           "method": "POST",
-          "path": "/api/jobs/:id/translate",
-          "description": "Trigger model translation",
+          "path": "/api/models/link",
+          "description": "Link model with embed code (browser UI)",
           "auth_required": true
         },
         {
           "method": "GET",
-          "path": "/api/jobs/:id/embed-data",
-          "description": "Get viewer data",
+          "path": "/api/models",
+          "description": "List all linked models",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/models/:id",
+          "description": "Get model details",
+          "auth_required": true
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/models/:id",
+          "description": "Remove linked model",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/models/:id/status",
+          "description": "Poll translation status",
           "auth_required": true
         },
         {
@@ -477,21 +513,62 @@
           "auth_required": true
         },
         {
+          "method": "POST",
+          "path": "/api/upload/bypass",
+          "description": "Upload .f3d and translate to SVF2 (awaiting APS)",
+          "auth_required": true
+        },
+        {
           "method": "GET",
-          "path": "/api/models",
-          "description": "List all models",
+          "path": "/api/viewer/token",
+          "description": "Get Autodesk Viewer token (awaiting APS)",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/auth/login",
+          "description": "Start OAuth PKCE flow with Autodesk",
+          "auth_required": false
+        },
+        {
+          "method": "GET",
+          "path": "/api/auth/callback",
+          "description": "OAuth callback, set session cookie",
+          "auth_required": false
+        },
+        {
+          "method": "GET",
+          "path": "/api/auth/status",
+          "description": "Check Autodesk connection status",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/auth/logout",
+          "description": "Clear session and delete tokens",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/fusion/projects",
+          "description": "List Fusion projects (awaiting APS)",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/fusion/projects/:id/files",
+          "description": "List .f3d files in project (awaiting APS)",
           "auth_required": true
         }
       ],
       "embeddable_components": [
         {
-          "name": "ModuleEmbed",
-          "file": "ModuleEmbed.tsx",
+          "name": "FusionEmbed",
+          "file": "FusionEmbed.tsx",
           "props": [
-            "modelId",
-            "token",
-            "baseUrl",
-            "onParameterChange"
+            "embedCode",
+            "publicLink",
+            "displayMode"
           ]
         }
       ]
@@ -513,9 +590,11 @@
         "Press die generation (STL male/female)",
         "Material-aware pressability classification",
         "STEP file support",
-        "React Three Fiber 3D viewer"
+        "React Three Fiber 3D viewer",
+        "Simple/Advanced mode tabs",
+        "Die file downloads"
       ],
-      "description": "Segments 3D sculpture meshes into quasi-developable patches for metal press fabrication. Computes discrete Gaussian curvature, classifies pressability by material, generates flat patterns and press die geometries. 3 database tables. Supports Simple Mode dome flattening and STEP files.",
+      "description": "Segments 3D sculpture meshes into quasi-developable patches for metal press fabrication. Computes discrete Gaussian curvature, classifies pressability by material, generates flat patterns and press die geometries. Simple/Advanced mode UI with die downloads. 3 database tables. Supports STEP files.",
       "dependencies": [
         "mod-fiducious"
       ],
@@ -630,11 +709,11 @@
       "type": "web-module",
       "version": "0.1.0",
       "repo": "eccentricexecutioners-spec/mod-universal-3d-viewer",
-      "deploy_url": null,
-      "status": "building",
-      "api_base": null,
-      "requires_auth": false,
-      "supabase_tables": 0,
+      "deploy_url": "https://mod-universal-3d-viewer.vercel.app",
+      "status": "standalone-working",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 1,
       "provides": [
         "Multi-format CAD file import (STEP, STL, OBJ, IGES)",
         "Browser-based 3D rendering via Three.js",
@@ -642,12 +721,38 @@
         "OpenCascade.js geometry processing",
         "Embeddable React component"
       ],
-      "description": "Universal CAD file viewer for Next.js applications. Supports STEP, STL, OBJ, IGES formats with browser-based rendering using Three.js and OpenCascade.js. Client-side only, no server processing required.",
+      "description": "Universal CAD file viewer for Next.js applications. Supports STEP, STL, OBJ, IGES formats with browser-based rendering using Three.js and OpenCascade.js. Client-side viewer with backend job API for file persistence. 1 Supabase table. Deployed to Vercel.",
       "dependencies": [],
       "used_by": [
-        "mod-chickadee-parametric"
+        "mod-chickadee-parametric",
+        "mod-cad-watcher"
       ],
-      "endpoints": [],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/jobs/create",
+          "description": "Create viewer job",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id",
+          "description": "Get job status",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id/embed-data",
+          "description": "Get embed data for viewer",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/jobs/:id/confirm",
+          "description": "Confirm job completion",
+          "auth_required": true
+        }
+      ],
       "embeddable_components": [
         {
           "name": "UniversalViewer",
@@ -662,10 +767,111 @@
       ]
     },
     {
+      "id": "mod-cad-watcher",
+      "name": "CAD Watcher Desktop Agent",
+      "type": "web-module",
+      "version": "0.1.0",
+      "repo": "eccentricexecutioners-spec/mod-cad-watcher",
+      "deploy_url": "https://mod-cad-watcher.vercel.app",
+      "status": "integrated",
+      "api_base": "/api",
+      "requires_auth": true,
+      "supabase_tables": 3,
+      "provides": [
+        "Desktop agent (Python, PyQt6 system tray) for macOS/Windows/Linux",
+        "Pairing token flow — one-time setup per fabricator machine",
+        "watchdog file monitoring with 2s debounce",
+        "Signed URL upload pipeline to Supabase Storage",
+        "Heartbeat-based project assignment delivery",
+        "Webhook callback to Mothership on file upload",
+        "CAD Watcher block in Mothership page designer (auto-updating 3D viewer)",
+        "Supports 12 CAD formats including IFC (Revit export)"
+      ],
+      "description": "Cross-platform desktop agent that watches local CAD save folders and automatically syncs files to the Mothership. Fabricators save CAD files as normal — the agent handles upload, webhook callback, and live viewer updates silently in the background. PyInstaller packaged for macOS and Windows.",
+      "dependencies": [
+        "mod-universal-3d-viewer"
+      ],
+      "used_by": [
+        "eccentricexecutioners"
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/pairing/token",
+          "description": "Generate pairing token (admin)",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/agent/register",
+          "description": "Register desktop agent, return agent JWT",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/agent/heartbeat",
+          "description": "Update heartbeat, return pending assignments",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/agent/status",
+          "description": "Get agent status",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/assignments/create",
+          "description": "Notify agent of new project assignment",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/jobs/create",
+          "description": "Create upload job, return signed URL",
+          "auth_required": true
+        },
+        {
+          "method": "POST",
+          "path": "/api/jobs/:id/confirm",
+          "description": "Mark job complete, fire Mothership webhook",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id",
+          "description": "Get job status",
+          "auth_required": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/jobs/:id/embed-data",
+          "description": "Get embed data with viewer_compatible flag",
+          "auth_required": true
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/jobs/:id",
+          "description": "Delete job (admin)",
+          "auth_required": true
+        }
+      ],
+      "embeddable_components": [
+        {
+          "name": "CADWatcherBlock",
+          "file": "CADWatcherBlock.tsx",
+          "props": [
+            "projectId",
+            "pollInterval"
+          ]
+        }
+      ]
+    },
+    {
       "id": "mod-fiducious-pro",
       "name": "Fiducious Pro (iOS)",
       "type": "ios-app",
-      "version": "0.1.0",
+      "version": "0.4.0",
       "repo": "eccentricexecutioners-spec/mod-fiducious-pro",
       "deploy_url": null,
       "status": "building",
@@ -692,7 +898,7 @@
       "id": "geopanel",
       "name": "GeoPanel Dome Generator",
       "type": "fusion-addin",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "repo": "eccentricexecutioners-spec/geopanel",
       "deploy_url": null,
       "status": "building",
@@ -704,9 +910,12 @@
         "Exact planar face calculation",
         "Real-time geometry preview in Fusion 360",
         "User parameter integration",
-        "Spherical projection algorithms"
+        "Spherical projection algorithms",
+        "Instance propagation (master components with linked occurrences)",
+        "Panel classification and display mode selector",
+        "Distributable ZIP package"
       ],
-      "description": "Fusion 360 add-in that generates Goldberg polyhedron dome geometry with exact planar faces. Python 3.12+, macOS native. Implements GP(n,0) Class I geodesic generation with icosahedron base.",
+      "description": "Fusion 360 add-in that generates Goldberg polyhedron dome geometry with exact planar faces. Panel classification, instance propagation, display mode selector. Distributable ZIP package. Python 3.12+, macOS native. Implements GP(n,0) Class I geodesic generation with icosahedron base.",
       "dependencies": [],
       "used_by": [],
       "endpoints": [],
@@ -714,7 +923,7 @@
     },
     {
       "id": "polyhedron-generator",
-      "name": "Polyhedron Generator (Win→Mac Framework)",
+      "name": "Polyhedron Generator (Win\u2192Mac Framework)",
       "type": "fusion-addin",
       "version": "0.1.0",
       "repo": "eccentricexecutioners-spec/polyhedron-generator",
@@ -769,10 +978,10 @@
       "domain": "eccentricexecutioners.ca",
       "repo": "eccentricexecutioners-spec/eccentricexecutioners",
       "status": "live",
-      "pages": 23,
-      "api_routes": 35,
-      "supabase_tables": 6,
-      "description": "Internal ops hub — projects, clients, fabricators, hours, full module toolkit",
+      "pages": 50,
+      "api_routes": 68,
+      "supabase_tables": 35,
+      "description": "Internal ops hub \u2014 projects, clients, fabricators, hours, full module toolkit, finance (invoices, receipts, mileage, bank), markers, page designer, accountant portal. 50 pages, 68 API routes, 35 Supabase tables. 461 tests passing. America/Vancouver timezone. Mobile-optimized.",
       "modules_used": [
         "mod-fiducious",
         "mod-sisyphean",
@@ -782,8 +991,36 @@
         "mod-hbc-order-hat-blocks",
         "mod-hbc-order-flanges",
         "mod-hbc-order-band-blocks",
-        "mod-mosaic"
-      ]
+        "mod-mosaic",
+        "mod-cad-watcher"
+      ],
+      "email_infrastructure": {
+        "provider": "Resend",
+        "account": "shared",
+        "from_domain": "eccentricexecutioners.ca",
+        "from_email": "hello@eccentricexecutioners.ca",
+        "domain_verified": false,
+        "pattern": "lazy-init",
+        "template_source": "digitalconformateur",
+        "functions": [
+          "sendAdminNewFabricatorEmail",
+          "sendAdminNewClientEmail",
+          "sendAdminProjectUpdateEmail",
+          "sendFabricatorInviteEmail",
+          "sendFabricatorApprovedEmail",
+          "sendFabricatorProjectAssignedEmail",
+          "sendFabricatorClientAddedEmail",
+          "sendClientInviteEmail",
+          "sendClientProjectUpdateEmail",
+          "sendClientMessageEmail"
+        ],
+        "legacy_aliases": [
+          "sendProjectStatusEmail",
+          "sendAccessCodeEmail"
+        ],
+        "phase": 1,
+        "notes": "Self-contained. Phase 2 migration to centralised /api/email/send route pending."
+      }
     },
     {
       "id": "digitalconformateur",
@@ -792,13 +1029,25 @@
       "repo": "eccentricexecutioners-spec/digitalconformateur",
       "status": "live",
       "pages": 9,
-      "api_routes": 35,
+      "api_routes": 39,
       "supabase_tables": 4,
-      "description": "B2B/B2C digital hat measurement service for hatters and their clients",
+      "description": "B2B/B2C digital hat measurement service for hatters and their clients. 3D mesh viewer integration (mod-sisyphean). 18 email templates. Stripe payments.",
       "modules_used": [
         "mod-head-sizer",
-        "mod-hbc-order-hat-blocks"
-      ]
+        "mod-hbc-order-hat-blocks",
+        "mod-sisyphean"
+      ],
+      "email_infrastructure": {
+        "provider": "Resend",
+        "account": "shared",
+        "from_domain": "digitalconformateur.ca",
+        "from_email": "sizing@digitalconformateur.ca",
+        "domain_verified": true,
+        "pattern": "lazy-init",
+        "function_count": 18,
+        "phase": 1,
+        "notes": "Self-contained. Source of truth for EE email template pattern. Phase 2 will migrate to call mothership /api/email/send."
+      }
     },
     {
       "id": "pocketstairs",
@@ -820,25 +1069,41 @@
       "module": "mod-stair-straight-run",
       "severity": "high",
       "issue": "No authentication on API routes",
-      "discovered": "2026-02-22"
+      "discovered": "2026-02-22",
+      "resolved": "2026-03-06",
+      "resolution": "Auth middleware added to all 3 API routes"
     },
     {
       "module": "mod-head-sizer",
       "severity": "medium",
       "issue": "Supabase module-scope initialization bug",
-      "discovered": "2026-02-22"
-    },
-    {
-      "module": "mod-hbc-order-hat-blocks",
-      "severity": "low",
-      "issue": "package.json incorrectly names itself mod-fusion360",
-      "discovered": "2026-02-22"
+      "discovered": "2026-02-22",
+      "resolved": "2026-03-06",
+      "resolution": "Lazy-init inside handler function"
     },
     {
       "module": "mod-fiducious-slim",
       "severity": "info",
-      "issue": "Abandoned — no git repo, no package.json, Python research scripts only. Consider archiving or deleting.",
+      "issue": "Abandoned \u2014 no git repo, no package.json, Python research scripts only. Consider archiving or deleting.",
       "discovered": "2026-02-23"
+    },
+    {
+      "module": "mod-fusion-model-control",
+      "severity": "info",
+      "issue": "APS activation pending \u2014 OAuth PKCE, file upload, and Autodesk Viewer deployed but blocked by Autodesk Platform Services activation (AUTH-001).",
+      "discovered": "2026-03-03"
+    },
+    {
+      "module": "mod-hbc-order-band-blocks",
+      "severity": "low",
+      "issue": "RLS overpermissive \u2014 anonymous INSERT/SELECT/DELETE with no row filtering.",
+      "discovered": "2026-02-23"
+    },
+    {
+      "module": "mod-chickadee-parametric",
+      "severity": "low",
+      "issue": "No authentication on any endpoint. Building status \u2014 fix before launch.",
+      "discovered": "2026-03-06"
     }
   ]
 }
