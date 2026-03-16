@@ -64,3 +64,23 @@ SUPABASE_SERVICE_ROLE_KEY=
 - **Architecture:** Thin orchestrator — no processing, no database, calls Fiducious, uses localStorage
 - **IRC 2021:** Code compliance checks for max rise, min run, max variation, min width, min headroom
 - **Design:** Dark theme, ee-gold (#D4A574), Montserrat font
+
+
+---
+
+## WORKING WITH CLAUDE.AI
+
+When collaborating with Claude.ai to write prompts or plan work:
+
+- Always present prompt files as .md files using the file panel (present_files
+  tool) — never paste prompts as code blocks in chat
+- Karl edits prompts in the panel before running them in Claude Code
+- Prompt files follow the naming convention: PROMPT-XX-[topic].md
+- Investigation-only prompts: INVESTIGATE-[topic].md
+- Handoff update prompts: HANDOFF-UPDATE-[session].md
+- Context sync prompts: CONTEXT-SYNC-[topic].md
+
+This instruction exists in:
+1. Karl's Claude.ai core memory
+2. Claude.ai project instructions
+3. This CLAUDE.md (you are here)
