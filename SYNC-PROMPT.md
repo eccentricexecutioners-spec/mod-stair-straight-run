@@ -121,3 +121,8 @@ Based on the prompt file for this session
   do not keep patching the same problem
 - After completing work, update CLAUDE.md or the relevant HANDOFF file
   with what changed
+- Always present output files to the user using the present_files tool
+  after creating or modifying any .md prompt file, document, or deliverable.
+  Never paste file contents as a code block when a file should be presented.
+  The user will drag the presented file into Claude.ai — this is the handoff
+  workflow for all prompt files and documents.
